@@ -1,0 +1,51 @@
+<launch>
+  <arg name="sim" default="true" />
+  <param name="/use_sim_time" value="$(arg sim)" />
+  <arg name="bag_filename" unless="$(arg sim)" /> <!--bag_namefile is not required if sim=false-->
+
+  <param name="robot_description"
+    textfile="$(find iai_pr2_description)/robots/pr2_calibrated_with_ft.xml" />
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher"
+    type="robot_state_publisher" />
+
+  <node name="cartographer_node" pkg="cartographer_ros"
+      type="cartographer_node" args="
+          -configuration_directory
+              $(find cartographer_ros)/configuration_files
+          -configuration_basename pr2.lua"
+      output="screen">
+    <remap from="scan" to="/base_scan" />
+  </node>
+
+  <node name="rviz" pkg="rviz" type="rviz" required="true"
+      args="-d $(find cartographer_ros)/configuration_files/demo_2d.rviz" />
+
+ <!-- If it is using a BAG file (simulation) -->
+  <group if="$(arg sim)">
+    <node name="playbag" pkg="rosbag" type="play"
+          args="--clock $(arg bag_filename)">
+        <remap from="tf" to="tf_in" />
+    </node>
+    <node name="tf_remove_frames" pkg="cartographer_ros"
+        type="tf_remove_frames.py">
+      <remap from="tf_out" to="/tf" />
+      <rosparam param="remove_frames">
+        - map
+        - odom_combined
+      </rosparam>
+    </node>
+  </group>
+
+ <!-- If you're using the robot (not simulation) -->
+  <group unless="$(arg sim)">
+    <node name="tf_remove_frames" pkg="cartographer_ros"
+        type="tf_remove_frames.py">
+      <remap from="tf_out" to="/tf" />
+      <rosparam param="remove_frames">
+        - map
+      </rosparam>
+    </node>
+  </group>
+
+</launch>
