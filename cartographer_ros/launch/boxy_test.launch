@@ -1,5 +1,5 @@
 <launch>
-  <arg name="sim" default="false" />
+  <arg name="sim" default="true" />
   <param name="/use_sim_time" value="$(arg sim)" />
   <arg name="bag_filename" unless="$(arg sim)" /> <!--bag_namefile is not required if sim=false-->
 
