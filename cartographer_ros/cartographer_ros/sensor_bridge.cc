@@ -29,6 +29,7 @@ using carto::transform::Rigid3d;
 namespace {
 
 const string& CheckNoLeadingSlash(const string& frame_id) {
+  //std::cerr << "Checking frame " << frame_id << " for starting slash" << std::endl;
   if (frame_id.size() > 0) {
     CHECK_NE(frame_id[0], '/');
   }

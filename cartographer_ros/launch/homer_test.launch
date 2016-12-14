@@ -1,5 +1,5 @@
 <launch>
-  <arg name="sim" default="false" />
+  <arg name="sim" default="true" />
   <param name="/use_sim_time" value="$(arg sim)" />
   <arg name="bag_filename" unless="$(arg sim)" /> <!--bag_namefile is not required if sim=false-->
 
@@ -15,7 +15,7 @@
       type="cartographer_node" args="
           -configuration_directory
               $(find cartographer_ros)/configuration_files
-          -configuration_basename boxy.lua"
+          -configuration_basename homer.lua"
       output="screen">
     <!--remap from="scan" to="/laser_scans" /-->
     <remap from="scan" to="/hokuyo_utm30_front/most_intense" />
@@ -50,6 +50,6 @@
   </group-->
 
 
-  <include file="$(find cartographer_ros)/launch/boxy_rviz.launch"/>
+  <!--include file="$(find cartographer_ros)/launch/boxy_rviz.launch"/-->
 
 </launch>
