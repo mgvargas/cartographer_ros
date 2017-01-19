@@ -1,4 +1,3 @@
 /cartographer_ros/carto_qt/**
 /cartographer_ros/carto_qt
-/cartographer_ros/build-carto_qt-qt4_defaults-Debug/
-/cartographer_ros/build-carto_qt-qt4_defaults-Debug/**
+*.*~
